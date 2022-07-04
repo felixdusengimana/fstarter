@@ -1,0 +1,15 @@
+table, tr, td, th {
+    border-collapse: collapse;
+    border: none!important;
+}
+thead tr{
+    background-color: #F9F8F9;
+    color: #2D2F30!important;
+}
+th, td{
+    padding: 13px 22px!important;
+    border-bottom: 1px solid #EAEAEA!important;
+    border: 2px solid #EAEAEA!important;
+
+}
+
