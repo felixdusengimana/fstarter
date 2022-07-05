@@ -1,40 +1,30 @@
-const dotenv = require('dotenv')
+const {connectToDB} = require("./src/config/db")
+require('dotenv').config();
 const express = require('express')
-const app = express()
 const cors = require('cors')
-const mongoose = require('mongoose')
-const userRoutes = require('./routes/user.route')
-const candidateRoutes = require('./routes/candidate.route')
-const { Swaggiffy } = require('swaggiffy'); // Using require
-new Swaggiffy().setupExpress(app).swaggiffy();
+const bodyParser = require('body-parser')
+const swaggerUI = require('swagger-ui-express')
+swaggerDocument = require('./swagger.json');
+
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerSpecification = swaggerJsdoc(swaggerDocument);
+
+const port = process.env.PORT || 5000
+connectToDB()
 
 
-dotenv.config()
-app.use(cors()) // Handle CORS
-app.use(express.json()) // Parse Everything that comes as req.body json
+const app = express()
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())
+app.use(cors())
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpecification));
 
-const env = process.env.NODE_ENV || "development";
-
-const DB_URL =  env === "container" ? process.env.DB_URL_CONTAINER : process.env.DB_URL_DEV
-
-console.log('Link: ' + DB_URL)
-
-// Connect to MongoDB
-mongoose.connect(DB_URL)
-.then( () => console.log ("Connected to DB" )) 
-.catch( (err) => console.error("Could not connect to MongoDB"))
-
-// User Routes
-app.use('/api/user', userRoutes);
-
-// Candidate Routes
-app.use('/api/candidate', candidateRoutes);
-
-// Welcome Route
-app.get('/', (req,res) => {
-    res.send('VOTING SYSTEM ࡙࡙࡙࡙࡙');
+app.get("/", (req, res)=>{
+    res.send("Welcome to NE preparation APIs")
 })
 
-app.listen(3032, () => {
-    console.log('Server Listening on Port 3032');
+require("./src/routes/user.router")(app);
+
+app.listen(port, ()=>{
+    console.log(`Application running on port ${port}`);
 })
