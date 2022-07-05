@@ -1,0 +1,42 @@
+version: '3'
+services:
+    client:
+      depends_on:
+        - server
+      build:
+        context: ./client
+        dockerfile: Dockerfile
+      ports:
+        - "3000:3000"
+      volumes:
+        - /usr/src/node_modules
+        - ./client:/usr/src/client
+      restart: on_failure
+      container_name: client
+    
+    server:
+      build:
+        context: ./server
+        dockerfile: Dockerfile
+      ports:
+        - "5000:5000"
+      volumes:
+        - /usr/src/node_modules
+        - ./server:/usr/src/server
+      restart: on_failure
+      container_name: server
+      env_file:
+        - ./server/.env
+    
+    mongo:
+      image: mongo
+      volumes:
+          - ./db-service/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+          - ./db-service/mongo:/data/db
+      ports:
+      - "27018:27017"
+      restart: on_failure
+      container_name: mongo
+      env_file:
+        - ./mongo/.env
+
