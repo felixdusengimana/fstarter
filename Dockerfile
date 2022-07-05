@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:alpine as build
 
 WORKDIR /usr/src/client
 
@@ -8,6 +8,12 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 3000
+RUN npm run build
 
-CMD ["npm", "start"]
+FROM nginx:1.15
+
+COPY --from=build /usr/src/client/build /usr/share/nginx/html
+COPY ./.nginx/nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+
+# CMD ["npm", "start"]
