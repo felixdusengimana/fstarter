@@ -36,7 +36,8 @@ function App() {
         background: "#E9E8FC",
         color: "#242533",
         borderColor: "#FF218C"
-      }}/>
+      }}
+      icon/>
     </div>
   );
 }
