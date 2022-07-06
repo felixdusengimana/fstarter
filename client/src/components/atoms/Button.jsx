@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Button({theme}) {
+export default function Button({theme, disabled, onClick, children}) {
 
   return (
     <button style={{

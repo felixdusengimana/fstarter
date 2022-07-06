@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap';
 // import Button from './components/atoms/Button';
 import Table from './components/molecules/Table';
+import Input from './components/atoms/Input';
 
 function App() {
   const handleClick = (headerName)=>{
@@ -30,6 +31,12 @@ function App() {
       ]}
       withIndex/>
       
+      <Input 
+      theme={{
+        background: "#E9E8FC",
+        color: "#242533",
+        borderColor: "#FF218C"
+      }}/>
     </div>
   );
 }
